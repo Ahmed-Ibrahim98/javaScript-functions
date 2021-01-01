@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cubics</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <style>
+        .container {
+            width: 50%;
+            margin-top: 40px;
+            border: 1px solid #ccc;
+            background-color: #eee;
+            padding: 40px;
+            border-radius: 5px;
+        }
+
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .description {
+            font-size: 20px;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            font-weight: bold;
+        }
+
+        td,
+        th {
+            margin-right: 40px;
+        }
+
+        #result {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <p class="description">This program calcualtes the cubic values of 5 numbers that you enter</p>
+        <form>
+            <div class="mb-3">
+                <label for="formGroupExampleInput" class="form-label">Number: </label>
+                <input type="number" class="form-control" id="num" placeholder="Number...">
+            </div>
+            <button type="button" class="btn btn-primary" id="btn-add">Add</button>
+            <button type="button" class="btn btn-primary" id="btn" disabled>Calculate</button>
+        </form>
+        <div id="result">
+            <p class="text-center lead">Cubic Values</p>
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th scope="col">Number</th>
+                        <th scope="col">Cubic Values</th>
+                    </tr>
+                </thead>
+                <tbody id="tbl-body">
+                </tbody>
+            </table>
+            <div>
+                <button type="button" class="btn btn-primary" id="clear">Clear</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        let numbers = [];
+        let cubes = [];
+        var x;
+        var cube;
+        var counter = 0;
+        document.querySelector('#btn-add').addEventListener('click', () => {
+            counter++;
+            var input = document.getElementById("num").value;
+            document.getElementById("num").value = ''
+            x = Number(input);
+            cube = x * x * x;
+            if (counter <= 5) {
+                numbers.push(x);
+                cubes.push(cube);
+                if (counter === 5) {
+                    document.querySelector('#btn-add').disabled = true;
+                    document.querySelector('#btn').disabled = false;
+                    counter = 0;
+                }
+            }
+        });
+
+        document.getElementById("btn").addEventListener("click", () => {
+            document.querySelector('#result').style = 'display:block'
+            document.querySelector('#result').classList.add('result')
+            const tblBody = document.getElementById('tbl-body');
+            while (tblBody.firstChild) {
+                tblBody.removeChild(tblBody.firstChild);
+            }
+            for (let i = 0; i < 5; i++) {
+                var num = numbers[i]
+                var cubed = cubes[i]
+                var row = document.createElement("tr");
+                var cell1 = document.createElement("td");
+                var cellText1 = document.createTextNode(num);
+                cell1.appendChild(cellText1);
+                row.appendChild(cell1);
+                var cell2 = document.createElement("td");
+                var cellText2 = document.createTextNode(cubed);
+                cell2.appendChild(cellText2);
+                row.appendChild(cell2);
+                tblBody.appendChild(row);
+            }
+            cubes = []
+            numbers = []
+            document.querySelector('#btn-add').disabled = false;
+            document.querySelector('#btn').disabled = true;
+        });
+        document.getElementById("clear").addEventListener('click', function () {
+            document.querySelector('#result').style = 'display:none'
+            document.querySelector('#result').classList.remove('result')
+        })
+    </script>
+</body>
+
+</html>
